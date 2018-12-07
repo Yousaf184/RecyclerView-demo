@@ -1,7 +1,7 @@
 package com.example.yousafkhan.recyclerviewdemo.recyclerview;
 
+import androidx.appcompat.view.ActionMode;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 

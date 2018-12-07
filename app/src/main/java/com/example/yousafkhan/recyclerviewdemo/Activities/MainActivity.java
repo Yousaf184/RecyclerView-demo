@@ -2,9 +2,10 @@ package com.example.yousafkhan.recyclerviewdemo.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.appcompat.view.ActionMode;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.ActionMode;
 
 import com.example.yousafkhan.recyclerviewdemo.R;
 import com.example.yousafkhan.recyclerviewdemo.models.Contact;
