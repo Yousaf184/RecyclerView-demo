@@ -12,19 +12,19 @@
         android:id="@+id/action_clear"
         android:orderInCategory="2"
         android:title="clear"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_select_all"
         android:orderInCategory="3"
         android:title="Select All"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_delete"
         android:orderInCategory="4"
         android:title="delete"
         android:icon="@drawable/ic_delete"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>

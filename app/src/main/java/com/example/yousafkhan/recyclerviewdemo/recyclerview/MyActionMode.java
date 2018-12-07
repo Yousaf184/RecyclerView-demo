@@ -32,7 +32,6 @@ public class MyActionMode implements ActionMode.Callback {
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         mode.getMenuInflater().inflate(R.menu.recyclerview_menu, menu);
         selectedItemCount = menu.findItem(R.id.action_item_count);
-        mode.setTitle("Choose Action");
         return true;
     }
 
