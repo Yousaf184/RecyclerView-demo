@@ -1,6 +1,6 @@
 package com.example.yousafkhan.recyclerviewdemo.recyclerview;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.example.yousafkhan.recyclerviewdemo.models.Contact;
 
