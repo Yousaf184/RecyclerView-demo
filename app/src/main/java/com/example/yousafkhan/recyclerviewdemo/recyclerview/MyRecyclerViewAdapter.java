@@ -13,6 +13,7 @@ import com.example.yousafkhan.recyclerviewdemo.models.Contact;
 
 import java.util.List;
 
+import androidx.recyclerview.selection.ItemDetailsLookup;
 import androidx.recyclerview.selection.SelectionTracker;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.MyRvViewHolder> {
@@ -72,6 +73,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         public void setDataToView(Contact contact) {
             contactNameText.setText(contact.getContactName());
             contactNumberText.setText(contact.getContactPhoneNumber());
+        }
+
+        // returns an instance of MyItemDetail to MyItemDetailsLookup class
+        public ItemDetailsLookup.ItemDetails<Contact> getItemDetails() {
+            return new MyItemDetail(dataList.get(getAdapterPosition()), getAdapterPosition());
         }
     }
 }
