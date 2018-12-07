@@ -13,7 +13,7 @@ public class MyItemKeyProvider extends ItemKeyProvider<Contact> {
 
     private List<Contact> dataList;
 
-    protected MyItemKeyProvider(int scope, List<Contact> contactList) {
+    public MyItemKeyProvider(int scope, List<Contact> contactList) {
         super(scope);
         this.dataList = contactList;
     }

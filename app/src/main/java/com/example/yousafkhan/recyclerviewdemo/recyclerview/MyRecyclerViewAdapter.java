@@ -48,6 +48,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public void onBindViewHolder(@NonNull MyRvViewHolder myRvViewHolder, int i) {
         Contact contact = dataList.get(i);
         myRvViewHolder.setDataToView(contact);
+        myRvViewHolder.setItemSelection(selectionTracker.isSelected(contact));
     }
 
     @Override
@@ -73,6 +74,17 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         public void setDataToView(Contact contact) {
             contactNameText.setText(contact.getContactName());
             contactNumberText.setText(contact.getContactPhoneNumber());
+        }
+
+        // sets View as active or inactive
+        public void setItemSelection(boolean isActive) {
+            itemView.setActivated(isActive);
+
+            if(isActive) {
+                selectedIcon.setVisibility(View.VISIBLE);
+            } else {
+                selectedIcon.setVisibility(View.INVISIBLE);
+            }
         }
 
         // returns an instance of MyItemDetail to MyItemDetailsLookup class

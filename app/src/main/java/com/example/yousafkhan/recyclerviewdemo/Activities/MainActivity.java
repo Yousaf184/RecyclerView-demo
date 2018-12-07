@@ -4,17 +4,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 
 import com.example.yousafkhan.recyclerviewdemo.R;
 import com.example.yousafkhan.recyclerviewdemo.models.Contact;
+import com.example.yousafkhan.recyclerviewdemo.recyclerview.MyActionMode;
+import com.example.yousafkhan.recyclerviewdemo.recyclerview.MyItemDetailsLookup;
+import com.example.yousafkhan.recyclerviewdemo.recyclerview.MyItemKeyProvider;
 import com.example.yousafkhan.recyclerviewdemo.recyclerview.MyRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.selection.ItemKeyProvider;
+import androidx.recyclerview.selection.SelectionTracker;
+import androidx.recyclerview.selection.StorageStrategy;
+
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private RecyclerView.Adapter<MyRecyclerViewAdapter.MyRvViewHolder> recyclerViewAdapter;
+    private SelectionTracker<Contact> selectionTracker;
+    private ActionMode actionMode;
+    private MyActionMode myActionMode;
 
     private List<Contact> contactList;
 
@@ -31,7 +43,67 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MyRecyclerViewAdapter(contactList));
+
+        recyclerViewAdapter = new MyRecyclerViewAdapter(contactList);
+        recyclerView.setAdapter(recyclerViewAdapter);
+
+        setRecyclerViewSelectionTracker();
+
+        // pass SelectionTracker in RecyclerViewAdapter to access this SelectionTracker
+        // inside RecyclerView.Adapter
+        ((MyRecyclerViewAdapter) recyclerViewAdapter).setSelectionTracker(selectionTracker);
+
+        setRecyclerViewSelectionObserver();
+    }
+
+    private void setRecyclerViewSelectionTracker() {
+        SelectionTracker.Builder<Contact> selectionBuilder = new SelectionTracker.Builder<>(
+                "my_selection_id",
+                recyclerView,
+                new MyItemKeyProvider(ItemKeyProvider.SCOPE_CACHED ,contactList),
+                new MyItemDetailsLookup(recyclerView),
+                StorageStrategy.createParcelableStorage(Contact.class)
+        );
+
+        selectionTracker = selectionBuilder.build();
+    }
+
+    private void setRecyclerViewSelectionObserver() {
+        selectionTracker.addObserver(new SelectionTracker.SelectionObserver() {
+            @Override
+            public void onSelectionChanged() {
+                super.onSelectionChanged();
+
+                if(selectionTracker.hasSelection() && actionMode == null) {
+                    myActionMode = new MyActionMode(
+                                                     selectionTracker,
+                                                     contactList,
+                                                     recyclerViewAdapter
+                                                   );
+
+                    actionMode = startSupportActionMode(myActionMode);
+
+                } else if(!selectionTracker.hasSelection() && actionMode != null) {
+                    actionMode.finish();
+                    actionMode = null;
+
+                } else {
+                    myActionMode.setSelectedItemCount(selectionTracker.getSelection().size());
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        selectionTracker.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        selectionTracker.onRestoreInstanceState(savedInstanceState);
     }
 
     private List<Contact> getData() {
